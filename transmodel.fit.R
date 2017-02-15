@@ -1,32 +1,32 @@
+source("~/R/getExpression.R")
+source("~/R/getTimes.R")
+source("transmodel.R")
+source("transmodel.error.R")
+
 ##
 ## use nlm to find the best fit to a given set of parameter guesses and a given time,data series
 ##
 ## set nuFixed=TRUE to hold nu fixed, i.e. not be a fitted parameter
 
-source("~/R/getExpression.R")
-source("~/R/getTimes.R")
-
-source("transmodel.R")
-source("transmodel.error.R")
-
 transmodel.fit = function(
+                          host="bartontools.dpb.carnegiescience.edu", dbname="bartonlab", user="sam", password="xenon5416",
                           fitTerms="rhop0.etap.gammap", turnOff=0,
                           rhoc0=25, rhon0=1, nu=10, rhop0=1, etap=1, gammap=4,
                           schema="gse70796", gene="At5g47370", condition="GR-REV",
                           dataTimes, dataValues, dataLabel=NA,
-                          plotBars=FALSE,  doPlot=TRUE
+                          main="", plotBars=FALSE,  doPlot=TRUE
                           ) {
 
     ## get time (in hours) and expression arrays for the given schema and gene ID from the database
     if (!hasArg(dataTimes)) {
-        dataTimes = getTimes(schema, condition)
-        if (max(dataTimes)>60) dataTimes = dataTimes/60
-        dataValues = getExpression(schema, condition, toupper(gene))
+        dataTimes = getTimes(schema, condition, host, dbname, user, password)
+        if (max(dataTimes)>5) dataTimes = dataTimes/60
+        dataValues = getExpression(schema, condition, toupper(gene), host, dbname, user, password)
         if (is.null(dataValues)) {
             print("No data - aborting.")
             return(NULL)
         }
-        if (is.na(dataLabel)) dataLabel = paste(toupper(schema)," ",condition,":",gene,sep="")
+        if (is.na(dataLabel)) dataLabel = paste(condition,":",gene,sep="")
     }
     
     ## estimate rhop0 from minimum t data points
@@ -120,7 +120,7 @@ transmodel.fit = function(
                    rhoc0=rhoc0, rhon0=rhon0, nu=nu,
                    rhop0=rhop0, etap=etap, gammap=gammap,
                    dataTimes=dataTimes, dataValues=dataValues, dataLabel=dataLabel,
-                   plotBars=plotBars)
+                   main=main, plotBars=plotBars)
     }
 
     ## return fit in case we want it

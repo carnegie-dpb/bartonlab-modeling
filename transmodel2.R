@@ -8,7 +8,7 @@ source("rhos.R")
 source("Rsquared.R")
 source("errorMetric.R")
 
-transmodel2 = function(turnOff, rhoc0,rhon0,nu, rhop0,etap,gammap, rhos0,etas,gammas, dataTimes,data1Values,data1Label,data2Values,data2Label, plotBars=FALSE) {
+transmodel2 = function(turnOff, rhoc0,rhon0,nu, rhop0,etap,gammap, rhos0,etas,gammas, dataTimes,data1Values,data1Label,data2Values,data2Label, plotBars=FALSE, main="") {
 
     ## calculation interval
     if (hasArg(dataTimes)) {
@@ -29,10 +29,10 @@ transmodel2 = function(turnOff, rhoc0,rhon0,nu, rhop0,etap,gammap, rhos0,etas,ga
     ## plot primary transcript concentration
     if (hasArg(data1Values)) {
         ymax = max(data1Values,data2Values,rhop_t,rhos_t)
-        plot(t, rhop_t, col="red", type="l", xlab="time after DEX application (h)", ylab="model concentration (lines), mRNA level (points)", lty=1, ylim=c(0,ymax))
+        plot(t, rhop_t, col="red", type="l", xlab="time after DEX application (h)", ylab="model concentration (lines), mRNA level (points)", lty=1, ylim=c(0,ymax), main=main)
     } else {
         ymax = max(rhop_t,rhos_t)
-        plot(t, rhop_t, col="red", type="l", xlab="time after DEX application (h)", ylab="nuclear concentration (arb)", lty=1, ylim=c(0,ymax))
+        plot(t, rhop_t, col="red", type="l", xlab="time after DEX application (h)", ylab="nuclear concentration (arb)", lty=1, ylim=c(0,ymax), main=main)
     }
 
     ## secondary transcript concentration
@@ -92,6 +92,8 @@ transmodel2 = function(turnOff, rhoc0,rhon0,nu, rhop0,etap,gammap, rhos0,etas,ga
     logFCp = log2(1 + rhoc0/rhop0*etap/gammap)
     logFCs = log2(1 + rhoc0/rhos0*etap/gammap*etas/gammas)
 
+    etap.hat = etap*rhon0/rhop0
+    etas.hat = etas*rhop0/rhos0
 
     ## optional annotation using right axis
     xlegend = par()$usr[2]*0.95
@@ -124,13 +126,13 @@ transmodel2 = function(turnOff, rhoc0,rhon0,nu, rhop0,etap,gammap, rhos0,etas,ga
     text(xlegend, maxRight-step*2, bquote(nu==.(signif(nu,2))), pos=2, col="blue")
 
     text(xlegend, maxRight-step*4, bquote(rho[p0]==.(round(rhop0,1))), pos=2, col="red")
-    text(xlegend, maxRight-step*5, bquote(eta[p]==.(signif(etap,3))), pos=2, col="red")
+    text(xlegend, maxRight-step*5, bquote(hat(eta)[p]==.(signif(etap.hat,3))), pos=2, col="red")
     text(xlegend, maxRight-step*6, bquote(gamma[p]==.(round(gammap,2))), pos=2, col="red")
     text(xlegend, maxRight-step*7, bquote(logFC(inf)==.(round(logFCp,2))), pos=2, col="red")
     text(xlegend, maxRight-step*8, bquote(r^2==.(round(R2p,2))), pos=2, col="red")
 
     text(xlegend, maxRight-step*10, bquote(rho[s0]==.(round(rhos0,1))), pos=2, col="darkgreen")
-    text(xlegend, maxRight-step*11, bquote(eta[s]==.(signif(etas,3))), pos=2, col="darkgreen")
+    text(xlegend, maxRight-step*11, bquote(hat(eta)[s]==.(signif(etas.hat,3))), pos=2, col="darkgreen")
     text(xlegend, maxRight-step*12, bquote(gamma[s]==.(round(gammas,2))), pos=2, col="darkgreen")
     text(xlegend, maxRight-step*13, bquote(logFC(inf)==.(round(logFCs,2))), pos=2, col="darkgreen")
     text(xlegend, maxRight-step*14, bquote(r^2==.(round(R2s,2))), pos=2, col="darkgreen")

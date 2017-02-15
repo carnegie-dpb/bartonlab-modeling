@@ -1,30 +1,29 @@
+source("~/R/getTimes.R")
+source("~/R/getExpression.R")
+source("transmodel.fit.R")
+source("transmodel2.R")
+source("transmodel2.error.R")
+
 ##
 ## use nlm to find the best fit to a given set of parameter guesses and a given time,data series
 ##
 
-source("~/R/getTimes.R")
-source("~/R/getExpression.R")
-
-source("transmodel.fit.R")
-
-source("transmodel2.R")
-source("transmodel2.error.R")
-
 transmodel2.fit = function(
+                           host="bartontools.dpb.carnegiescience.edu", dbname="bartonlab", user="sam", password="xenon5416",
                            schema="gse70796", condition="GR-REV", gene1="At5g03995", gene2="At5g44574",
                            rhon0=1, rhoc0=25, nu=10,
                            rhop0=1, etap=1, gammap=4,
                            rhos0=1, etas=1, gammas=4,
                            dataTimes, data1Values, data2Values, 
-                           data1Label=NA, data2Label=NA, plotBars=FALSE, doPlot=TRUE
+                           data1Label=NA, data2Label=NA, plotBars=FALSE, doPlot=TRUE, main=""
                            ) {
     
     ## get time (in hours) and expression arrays for the given schema and gene IDs
     if (!hasArg(dataTimes)) {
-        dataTimes = getTimes(schema, condition)
-        if (max(dataTimes)>50) dataTimes = dataTimes/60
-        data1Values = getExpression(schema, condition, toupper(gene1))
-        data2Values = getExpression(schema, condition, toupper(gene2))
+        dataTimes = getTimes(schema, condition, host, dbname, user, password)
+        if (max(dataTimes)>5) dataTimes = dataTimes/60
+        data1Values = getExpression(schema, condition, toupper(gene1), host, dbname, user, password)
+        data2Values = getExpression(schema, condition, toupper(gene2), host, dbname, user, password)
         if (is.na(data1Label)) data1Label = paste(condition,gene1,sep=":")
         if (is.na(data2Label)) data2Label = paste(condition,gene2,sep=":")
     }
@@ -65,7 +64,7 @@ transmodel2.fit = function(
                     rhoc0=rhoc0, rhon0=rhon0, nu=nu,
                     rhop0=rhop0, etap=etap, gammap=gammap,
                     rhos0=rhos0, etas=etas, gammas=gammas,
-                    dataTimes=dataTimes, data1Values=data1Values,data1Label=data1Label, data2Values=data2Values,data2Label=data2Label, plotBars=plotBars)
+                    dataTimes=dataTimes, data1Values=data1Values,data1Label=data1Label, data2Values=data2Values,data2Label=data2Label, plotBars=plotBars, main=main)
     }
 
     return(fit2)

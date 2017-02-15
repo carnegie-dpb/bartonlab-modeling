@@ -9,7 +9,7 @@ source("rhop.R")
 source("Rsquared.R")
 source("errorMetric.R")
 
-transmodel = function(turnOff=0, rhon0, rhoc0, nu, rhop0, etap, gammap, dataTimes, dataValues, dataLabel=NA, plotBars=FALSE) {
+transmodel = function(turnOff=0, rhon0, rhoc0, nu, rhop0, etap, gammap, dataTimes, dataValues, dataLabel=NA, plotBars=FALSE, main="") {
 
     ## set rhop0 = mean of minimum time points
     if (!hasArg(rhop0) && hasArg(dataValues) && hasArg(dataTimes)) {
@@ -37,11 +37,11 @@ transmodel = function(turnOff=0, rhon0, rhoc0, nu, rhop0, etap, gammap, dataTime
     if (hasArg(dataValues)) {
         ymin = min(dataValues,rhop_t)
         ymax = max(dataValues,rhop_t)
-        plot(t, rhop_t, type="l", xlab="time (h)", ylab="model concentration (lines), mRNA level (points)", col="red", ylim=c(0,ymax))
+        plot(t, rhop_t, type="l", xlab="time (h)", ylab="model concentration (lines), mRNA level (points)", col="red", ylim=c(0,ymax), main=main)
     } else {
         ymin = min(rhop_t)
         ymax = max(rhop_t)
-        plot(t, rhop_t, type="l", xlab="time (h)", ylab="nuclear concentration", col="red", ylim=c(0,ymax))
+        plot(t, rhop_t, type="l", xlab="time (h)", ylab="nuclear concentration", col="red", ylim=c(0,ymax), main=main)
     }
 
     ## compare with provided data
@@ -77,6 +77,8 @@ transmodel = function(turnOff=0, rhon0, rhoc0, nu, rhop0, etap, gammap, dataTime
     ## metrics for display
     logFCinf = log2(1 + etap/gammap*rhoc0/rhop0)
     kappa = nu*etap*rhoc0/rhop0
+
+    etap.hat = etap*rhon0/rhop0
 
     ## LOG
     step = 1.12^(par()$usr[4]-par()$usr[3])
@@ -114,7 +116,7 @@ transmodel = function(turnOff=0, rhon0, rhoc0, nu, rhop0, etap, gammap, dataTime
     text(xtext, maxRight-step*3, bquote(paste(nu==.(signif(nu,3))," ",h^-1)), pos=3, col="blue")
 
     text(xtext, maxRight-step*5, bquote(rho[p0]==.(signif(rhop0,3))), pos=3, col="red")
-    text(xtext, maxRight-step*6, bquote(paste(eta[p]==.(signif(etap,3))," ",h^-1)), pos=3, col="red")
+    text(xtext, maxRight-step*6, bquote(paste(hat(eta)[p]==.(signif(etap.hat,3))," ",h^-1)), pos=3, col="red")
     text(xtext, maxRight-step*7, bquote(paste(gamma[p]==.(round(gammap,2))," ",h^-1)), pos=3, col="red")
 
     ## flag suspect fits
