@@ -9,7 +9,7 @@ source("transmodel.error.R")
 ## set nuFixed=TRUE to hold nu fixed, i.e. not be a fitted parameter
 
 transmodel.fit = function(
-                          host="bartontools.dpb.carnegiescience.edu", dbname="bartonlab", user="sam", password="xenon5416",
+                          host="localhost", 
                           fitTerms="rhop0.etap.gammap", turnOff=0,
                           rhoc0=25, rhon0=1, nu=10, rhop0=1, etap=1, gammap=4,
                           schema="gse70796", gene="At5g47370", condition="GR-REV",
@@ -19,9 +19,9 @@ transmodel.fit = function(
 
     ## get time (in hours) and expression arrays for the given schema and gene ID from the database
     if (!hasArg(dataTimes)) {
-        dataTimes = getTimes(schema, condition, host, dbname, user, password)
+        dataTimes = getTimes(schema, condition, host)
         if (max(dataTimes)>5) dataTimes = dataTimes/60
-        dataValues = getExpression(schema, condition, toupper(gene), host, dbname, user, password)
+        dataValues = getExpression(schema=schema, condition=condition, gene=toupper(gene), host=host)
         if (is.null(dataValues)) {
             print("No data - aborting.")
             return(NULL)
