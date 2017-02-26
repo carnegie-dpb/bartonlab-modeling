@@ -9,8 +9,8 @@ source("transmodel2.error.R")
 ##
 
 transmodel2.fit = function(
-                           host="bartontools.dpb.carnegiescience.edu", dbname="bartonlab", user="sam", password="xenon5416",
-                           schema="gse70796", condition="GR-REV", gene1="At5g03995", gene2="At5g44574",
+                           host="localhost", 
+                           schema, condition, gene1, gene2,
                            rhon0=1, rhoc0=25, nu=10,
                            rhop0=1, etap=1, gammap=4,
                            rhos0=1, etas=1, gammas=4,
@@ -20,10 +20,10 @@ transmodel2.fit = function(
     
     ## get time (in hours) and expression arrays for the given schema and gene IDs
     if (!hasArg(dataTimes)) {
-        dataTimes = getTimes(schema, condition, host, dbname, user, password)
+        dataTimes = getTimes(schema=schema, condition=condition, host=host)
         if (max(dataTimes)>5) dataTimes = dataTimes/60
-        data1Values = getExpression(schema, condition, toupper(gene1), host, dbname, user, password)
-        data2Values = getExpression(schema, condition, toupper(gene2), host, dbname, user, password)
+        data1Values = getExpression(schema=schema, condition=condition, gene=toupper(gene1), host=host)
+        data2Values = getExpression(schema=schema, condition=condition, gene=toupper(gene2), host=host)
         if (is.na(data1Label)) data1Label = paste(condition,gene1,sep=":")
         if (is.na(data2Label)) data2Label = paste(condition,gene2,sep=":")
     }
