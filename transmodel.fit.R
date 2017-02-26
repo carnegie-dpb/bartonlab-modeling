@@ -12,14 +12,14 @@ transmodel.fit = function(
                           host="localhost", 
                           fitTerms="rhop0.etap.gammap", turnOff=0,
                           rhoc0=25, rhon0=1, nu=10, rhop0=1, etap=1, gammap=4,
-                          schema="gse70796", gene="At5g47370", condition="GR-REV",
+                          schema, gene, condition,
                           dataTimes, dataValues, dataLabel=NA,
                           main="", plotBars=FALSE,  doPlot=TRUE
                           ) {
 
     ## get time (in hours) and expression arrays for the given schema and gene ID from the database
     if (!hasArg(dataTimes)) {
-        dataTimes = getTimes(schema, condition, host)
+        dataTimes = getTimes(schema=schema, condition=condition, host=host)
         if (max(dataTimes)>5) dataTimes = dataTimes/60
         dataValues = getExpression(schema=schema, condition=condition, gene=toupper(gene), host=host)
         if (is.null(dataValues)) {

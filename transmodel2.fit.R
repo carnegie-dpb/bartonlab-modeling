@@ -8,8 +8,7 @@ source("transmodel2.error.R")
 ## use nlm to find the best fit to a given set of parameter guesses and a given time,data series
 ##
 
-transmodel2.fit = function(
-                           host="localhost", 
+transmodel2.fit = function(host="localhost",
                            schema, condition, gene1, gene2,
                            rhon0=1, rhoc0=25, nu=10,
                            rhop0=1, etap=1, gammap=4,
