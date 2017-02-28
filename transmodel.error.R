@@ -1,17 +1,13 @@
-##
-## return the error metric for modeling a direct target, for nlm usage
-##
-## assumes no nuclear loss of TF (gamman=0)
-
 source("rhop.R")
 source("errorMetric.R")
 
-## the transcription model to be minimized
-transmodel.error = function(p, fitTerms, turnOff, rhoc0,rhon0,nu, rhop0,etap,gammap, dataTimes, dataValues) {
+## return the error metric for modeling a direct target, for nlm usage
+##
+## assumes no nuclear loss of TF (gamman=0)
+## gammapMax is upper bound on allowable gammap value; if above that, fit is set to zero
 
-    ## allowable parameter ranges
-    gammapMax = 8.0
-    
+transmodel.error = function(p, fitTerms, turnOff, rhoc0,rhon0,nu, rhop0,etap,gammap, dataTimes, dataValues, gammapMax=8) {
+
     ## rhop0: fit rhop0 only
     if (fitTerms=="rhop0") {
         rhop0 = p[1]

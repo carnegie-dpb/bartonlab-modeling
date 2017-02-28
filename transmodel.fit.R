@@ -17,6 +17,9 @@ transmodel.fit = function(
                           main="", plotBars=FALSE,  doPlot=TRUE
                           ) {
 
+    ## if gammap supplied, leave it fixed in fits
+    if (hasArg(gammap)) fitTerms = "rhop0.etap"
+
     ## get time (in hours) and expression arrays for the given schema and gene ID from the database
     if (!hasArg(dataTimes)) {
         dataTimes = getTimes(schema=schema, condition=condition, host=host)
@@ -65,7 +68,7 @@ transmodel.fit = function(
     } else {
 
         ## two-param fit with gammap fixed; used to refine rhop0 and etap estimates below as well
-        fit = try(nlm(p=c(rhop0,etap), f=transmodel.error, gradtol=1e-5, iterlim=1000, fitTerms="rhop0.etap", turnOff=0,
+        fit = try(nlm(p=c(rhop0,etap), f=transmodel.error, gradtol=1e-5, iterlim=1000, fitTerms="rhop0.etap", turnOff=turnOff,
             rhoc0=rhoc0, nu=nu, gammap=gammap, dataTimes=dataTimes, dataValues=dataValues))
         if (class(fit)=="try-error") return(NULL)
         rhop0 = fit$estimate[1]
