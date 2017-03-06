@@ -1,5 +1,5 @@
-source("rhop.R")
-source("errorMetric.R")
+source("~/modeling/rhop.R")
+source("~/modeling/errorMetric.R")
 
 ## return the error metric for modeling a direct target, for nlm usage
 ##

@@ -1,7 +1,8 @@
 source("~/R/getExpression.R")
 source("~/R/getTimes.R")
-source("transmodel.R")
-source("transmodel.error.R")
+
+source("~/modeling/transmodel.R")
+source("~/modeling/transmodel.error.R")
 
 ##
 ## use nlm to find the best fit to a given set of parameter guesses and a given time,data series

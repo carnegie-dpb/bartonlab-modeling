@@ -1,12 +1,12 @@
+source("~/modeling/rhon.R")
+source("~/modeling/rhop.R")
+source("~/modeling/rhos.R")
+source("~/modeling/Rsquared.R")
+source("~/modeling/errorMetric.R")
+
 ##
 ## plot linear transcription model for a primary target and secondary target
 ##
-
-source("rhon.R")
-source("rhop.R")
-source("rhos.R")
-source("Rsquared.R")
-source("errorMetric.R")
 
 transmodel2 = function(turnOff, rhoc0,rhon0,nu, rhop0,etap,gammap, rhos0,etas,gammas, dataTimes,data1Values,data1Label,data2Values,data2Label, plotBars=FALSE, main="") {
 

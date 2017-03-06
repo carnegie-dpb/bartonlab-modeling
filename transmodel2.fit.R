@@ -1,8 +1,8 @@
 source("~/R/getTimes.R")
 source("~/R/getExpression.R")
-source("transmodel.fit.R")
-source("transmodel2.R")
-source("transmodel2.error.R")
+source("~/modeling/transmodel.fit.R")
+source("~/modeling/transmodel2.R")
+source("~/modeling/transmodel2.error.R")
 
 ##
 ## use nlm to find the best fit to a given set of parameter guesses and a given time,data series
@@ -35,7 +35,6 @@ transmodel2.fit = function(host="localhost",
     
     ## do minimization of primary transcript params
     fit1 = transmodel.fit(turnOff=0, rhoc0=rhoc0, rhon=rhon0, nu=nu,
-                          rhop0=rhop0, etap=etap, gammap=gammap,
                           dataTimes=dataTimes, dataValues=data1Values, doPlot=FALSE)
     
     ## new params from fit

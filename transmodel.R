@@ -1,13 +1,13 @@
+source("~/modeling/rhoc.R")
+source("~/modeling/rhon.R")
+source("~/modeling/rhop.R")
+
+source("~/modeling/Rsquared.R")
+source("~/modeling/errorMetric.R")
+
 ##
 ## plot linear transcription model for a direct target in one condition
 ##
-
-source("rhoc.R")
-source("rhon.R")
-source("rhop.R")
-
-source("Rsquared.R")
-source("errorMetric.R")
 
 transmodel = function(turnOff=0, rhon0, rhoc0, nu, rhop0, etap, gammap, dataTimes, dataValues, dataLabel=NA, plotBars=FALSE, main="") {
 
