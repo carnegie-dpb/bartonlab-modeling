@@ -118,7 +118,7 @@ transmodel2 = function(turnOff, rhoc0,rhon0,nu, rhop0,etap,gammap, rhos0,etas,ga
                )
     }
 
-    maxRight = max(rhon_t)*0.9
+    maxRight = max(rhon_t)*0.95
     step = max(rhon_t)*0.04
 
     text(xlegend, maxRight-step*0, bquote(rho[c0]==.(round(rhoc0,1))), pos=2, col="blue")
@@ -126,16 +126,18 @@ transmodel2 = function(turnOff, rhoc0,rhon0,nu, rhop0,etap,gammap, rhos0,etas,ga
     text(xlegend, maxRight-step*2, bquote(nu==.(signif(nu,2))), pos=2, col="blue")
 
     text(xlegend, maxRight-step*4, bquote(rho[p0]==.(round(rhop0,1))), pos=2, col="red")
-    text(xlegend, maxRight-step*5, bquote(hat(eta)[p]==.(signif(etap.hat,3))), pos=2, col="red")
-    text(xlegend, maxRight-step*6, bquote(gamma[p]==.(round(gammap,2))), pos=2, col="red")
-    text(xlegend, maxRight-step*7, bquote(logFC(inf)==.(round(logFCp,2))), pos=2, col="red")
-    text(xlegend, maxRight-step*8, bquote(r^2==.(round(R2p,2))), pos=2, col="red")
+    text(xlegend, maxRight-step*5, bquote(eta[p]==.(signif(etap,3))), pos=2, col="red")
+    text(xlegend, maxRight-step*6, bquote(hat(eta)[p]==.(signif(etap.hat,3))), pos=2, col="red")
+    text(xlegend, maxRight-step*7, bquote(gamma[p]==.(round(gammap,2))), pos=2, col="red")
+    text(xlegend, maxRight-step*8, bquote(logFC(inf)==.(round(logFCp,2))), pos=2, col="red")
+    text(xlegend, maxRight-step*9, bquote(r^2==.(round(R2p,2))), pos=2, col="red")
 
-    text(xlegend, maxRight-step*10, bquote(rho[s0]==.(round(rhos0,1))), pos=2, col="darkgreen")
-    text(xlegend, maxRight-step*11, bquote(hat(eta)[s]==.(signif(etas.hat,3))), pos=2, col="darkgreen")
-    text(xlegend, maxRight-step*12, bquote(gamma[s]==.(round(gammas,2))), pos=2, col="darkgreen")
-    text(xlegend, maxRight-step*13, bquote(logFC(inf)==.(round(logFCs,2))), pos=2, col="darkgreen")
-    text(xlegend, maxRight-step*14, bquote(r^2==.(round(R2s,2))), pos=2, col="darkgreen")
+    text(xlegend, maxRight-step*11, bquote(rho[s0]==.(round(rhos0,1))), pos=2, col="darkgreen")
+    text(xlegend, maxRight-step*12, bquote(eta[s]==.(signif(etas,3))), pos=2, col="darkgreen")
+    text(xlegend, maxRight-step*13, bquote(hat(eta)[s]==.(signif(etas.hat,3))), pos=2, col="darkgreen")
+    text(xlegend, maxRight-step*14, bquote(gamma[s]==.(round(gammas,2))), pos=2, col="darkgreen")
+    text(xlegend, maxRight-step*15, bquote(logFC(inf)==.(round(logFCs,2))), pos=2, col="darkgreen")
+    text(xlegend, maxRight-step*16, bquote(r^2==.(round(R2s,2))), pos=2, col="darkgreen")
 
 
 

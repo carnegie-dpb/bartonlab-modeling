@@ -9,6 +9,7 @@ source("~/modeling/transmodel2.error.R")
 ##
 
 transmodel2.fit = function(host="localhost",
+                           fitTerms="rhos0.etas.gammas",
                            schema, condition, gene1, gene2,
                            rhon0=1, rhoc0=25, nu=10,
                            rhop0=1, etap=1, gammap=4,
@@ -16,6 +17,9 @@ transmodel2.fit = function(host="localhost",
                            dataTimes, data1Values, data2Values, 
                            data1Label=NA, data2Label=NA, plotBars=FALSE, doPlot=TRUE, main=""
                            ) {
+
+    ## if gammas supplied, leave it fixed in fits
+    if (hasArg(gammas)) fitTerms = "rhos0.etas"
     
     ## get time (in hours) and expression arrays for the given schema and gene IDs
     if (!hasArg(dataTimes)) {
@@ -46,13 +50,22 @@ transmodel2.fit = function(host="localhost",
     if (fit1$code==5) print("*** fit1 MAXIMUM STEP SIZE EXCEEDED FIVE CONSECUTIVE TIMES ***")
 
     ## do minimization of secondary transcript params
-    fit2 = nlm(p=c(rhos0,etas,gammas),
-               rhoc0=rhoc0, rhon0=rhon0, nu=nu, etap=etap, gammap=gammap, f=transmodel2.error, gradtol=1e-5, iterlim=1000, dataTimes=dataTimes, data2Values=data2Values)
-    ## new params from fit
-    rhos0 = fit2$estimate[1]
-    etas = fit2$estimate[2]
-    gammas = fit2$estimate[3]
+    if (fitTerms=="rhos0.etas.gammas") {
 
+        fit2 = nlm(p=c(rhos0,etas,gammas), fitTerms=fitTerms,
+                   rhoc0=rhoc0, rhon0=rhon0, nu=nu, etap=etap, gammap=gammap, f=transmodel2.error, gradtol=1e-5, iterlim=1000, dataTimes=dataTimes, data2Values=data2Values)
+        rhos0 = fit2$estimate[1]
+        etas = fit2$estimate[2]
+        gammas = fit2$estimate[3]
+        
+    } else if (fitTerms=="rhos0.etas") {
+
+        fit2 = nlm(p=c(rhos0,etas), fitTerms=fitTerms, gammas=gammas,
+                   rhoc0=rhoc0, rhon0=rhon0, nu=nu, etap=etap, gammap=gammap, f=transmodel2.error, gradtol=1e-5, iterlim=1000, dataTimes=dataTimes, data2Values=data2Values)
+        rhos0 = fit2$estimate[1]
+        etas = fit2$estimate[2]
+    }
+        
     if (fit2$code==4) print("*** fit2 ITERATION LIMIT EXCEEDED ***")
     if (fit2$code==5) print("*** fit2 MAXIMUM STEP SIZE EXCEEDED FIVE CONSECUTIVE TIMES ***")
 
