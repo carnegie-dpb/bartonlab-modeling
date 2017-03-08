@@ -86,8 +86,8 @@ transmodel = function(turnOff=0, rhon0, rhoc0, nu, rhop0, etap, gammap, dataTime
     ylegend = 10^par()$usr[3]*sqrt(step)
 
     ## LIN
-    step = par()$usr[4]*0.045
-    maxRight = par()$usr[4]*0.7
+    maxRight = max(rhon_t)*0.7
+    step = max(rhon_t)*0.04
     xtext = par()$usr[2]*0.85
     ylegend = 0
 
@@ -110,8 +110,6 @@ transmodel = function(turnOff=0, rhon0, rhoc0, nu, rhop0, etap, gammap, dataTime
 
     text(xtext, maxRight-step*1, bquote(rho[c0]==.(round(rhoc0,1))), pos=3, col="blue")
     text(xtext, maxRight-step*2, bquote(rho[n0]==.(round(rhon0,1))), pos=3, col="blue")
-    ## text(xtext, maxRight-step*3, bquote(gamma[e]==0), pos=3, col="blue")
-    ## text(xtext, maxRight-step*4, bquote(gamma[n]==0), pos=3, col="blue")
     text(xtext, maxRight-step*3, bquote(paste(nu==.(signif(nu,3))," ",h^-1)), pos=3, col="blue")
 
     text(xtext, maxRight-step*5, bquote(rho[p0]==.(signif(rhop0,3))), pos=3, col="red")
@@ -120,7 +118,7 @@ transmodel = function(turnOff=0, rhon0, rhoc0, nu, rhop0, etap, gammap, dataTime
     text(xtext, maxRight-step*8, bquote(paste(gamma[p]==.(round(gammap,2))," ",h^-1)), pos=3, col="red")
 
     ## flag suspect fits
-    if (etap*(rhon0+rhoc0)/abs(rhop0)<1 || etap*(rhon0+rhoc0)/abs(rhop0)>100) {
+    if (abs(etap*(rhon0+rhoc0)/abs(rhop0))<1 || abs(etap*(rhon0+rhoc0)/abs(rhop0))>100) {
         text(max(t), maxRight-step*6+step*0.2, "!!", pos=3, col="red", font=2)
     }
     if (gammap<0.1 || gammap>10) {
@@ -129,9 +127,9 @@ transmodel = function(turnOff=0, rhon0, rhoc0, nu, rhop0, etap, gammap, dataTime
 
     ## derived fit metrics
     if (hasArg(dataTimes) && hasArg(dataValues)) {
-        text(xtext, maxRight-step*9, bquote(paste(kappa==.(signif(kappa,3))," ",h^-2)), pos=3, col="black")
-        text(xtext, maxRight-step*10, bquote(logFC(inf)==.(round(logFCinf,2))), pos=3, col="black")
-        text(xtext, maxRight-step*11, bquote(r^2==.(round(R2,2))), pos=3, col="black")
+        text(xtext, maxRight-step*10, bquote(paste(kappa==.(signif(kappa,3))," ",h^-2)), pos=3, col="black")
+        text(xtext, maxRight-step*11, bquote(logFC(inf)==.(round(logFCinf,2))), pos=3, col="black")
+        text(xtext, maxRight-step*12, bquote(r^2==.(round(R2,2))), pos=3, col="black")
     }
 
 }
