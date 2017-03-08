@@ -8,6 +8,9 @@ source("~/modeling/errorMetric.R")
 
 transmodel.error = function(p, fitTerms, turnOff, rhoc0,rhon0,nu, rhop0,etap,gammap, dataTimes, dataValues, gammapMax=8) {
 
+    ## have do do this before gammap is set below
+    gammapSupplied = hasArg(gammap)
+
     if (fitTerms=="nu") {
         nu = p[1]
     } else if (fitTerms=="rhop0") {
@@ -41,7 +44,7 @@ transmodel.error = function(p, fitTerms, turnOff, rhoc0,rhon0,nu, rhop0,etap,gam
     }
 
     ## set fit=0 if parameters out of bounds
-    if (!hasArg(gammap) && gammap>gammapMax) {
+    if (!gammapSupplied && gammap>gammapMax) {
         fitValues = dataTimes*0
     } else {
         fitValues = rhop(t=dataTimes, rhoc0=rhoc0, rhon0=rhon0, nu=nu, rhop0=rhop0, etap=etap, gammap=gammap, turnOff=turnOff)

@@ -51,7 +51,7 @@ transmodel.fit = function(host="localhost",
     if (fitTerms=="nu") {
 
         ## fix rhop0, etap, gammap; adjust nu
-        fit = try(nlm(p=c(nu), f=transmodel.error, gradtol=1e-5, iterlim=1000, fitTerms=fitTerms, turnOff=turnOff, dataTimes=dataTimes,dataValues=dataValues,
+        fit = try(nlm(p=c(nu), f=transmodel.error, steptol=1e-6, gradtol=1e-6, iterlim=1000, fitTerms=fitTerms, turnOff=turnOff, dataTimes=dataTimes,dataValues=dataValues,
                       rhoc0=rhoc0, rhop0=rhop0,etap=etap,gammap=gammap ))
         if (class(fit)=="try-error") return(NULL)
         nu = fit$estimate[1]
@@ -59,7 +59,7 @@ transmodel.fit = function(host="localhost",
     } else if (fitTerms=="rhop0") {
 
         ## fix nu, etap and gammap; adjust rhop0
-        fit = try(nlm(p=c(rhop0), f=transmodel.error, gradtol=1e-5, iterlim=1000, fitTerms=fitTerms, turnOff=turnOff, dataTimes=dataTimes,dataValues=dataValues,
+        fit = try(nlm(p=c(rhop0), f=transmodel.error, steptol=1e-6, gradtol=1e-6, iterlim=1000, fitTerms=fitTerms, turnOff=turnOff, dataTimes=dataTimes,dataValues=dataValues,
                       rhoc0=rhoc0,nu=nu, etap=etap,gammap=gammap ))
         if (class(fit)=="try-error") return(NULL)
         rhop0 = fit$estimate[1]
@@ -67,7 +67,7 @@ transmodel.fit = function(host="localhost",
     } else if (fitTerms=="etap") {
 
         ## fix nu, rhop0 and gammap; adjust etap
-        fit = try(nlm(p=c(etap), f=transmodel.error, gradtol=1e-5, iterlim=1000, fitTerms=fitTerms, turnOff=turnOff, dataTimes=dataTimes,dataValues=dataValues,
+        fit = try(nlm(p=c(etap), f=transmodel.error, steptol=1e-6, gradtol=1e-6, iterlim=1000, fitTerms=fitTerms, turnOff=turnOff, dataTimes=dataTimes,dataValues=dataValues,
                       rhoc0=rhoc0,nu=nu, rhop0=rhop0,gammap=gammap ))
         if (class(fit)=="try-error") return(NULL)
         etap = fit$estimate[1]
@@ -75,7 +75,7 @@ transmodel.fit = function(host="localhost",
     } else if (fitTerms=="gammap") {
 
         ## fix nu, rhop0, etap; adjust gammap
-        fit = try(nlm(p=c(gammap), f=transmodel.error, gradtol=1e-5, iterlim=1000, fitTerms=fitTerms, turnOff=turnOff, dataTimes=dataTimes,dataValues=dataValues,
+        fit = try(nlm(p=c(gammap), f=transmodel.error, steptol=1e-6, gradtol=1e-6, iterlim=1000, fitTerms=fitTerms, turnOff=turnOff, dataTimes=dataTimes,dataValues=dataValues,
                       rhoc0=rhoc0,nu=nu, rhop0=rhop0,etap=etap ))
         if (class(fit)=="try-error") return(NULL)
         gammap = fit$estimate[1]
@@ -83,7 +83,7 @@ transmodel.fit = function(host="localhost",
     } else if (fitTerms=="nu.etap") {
 
         ## fix rhop0, gammap; adjust nu, etap
-        fit = try(nlm(p=c(nu,etap), f=transmodel.error, gradtol=1e-5, iterlim=1000, fitTerms=fitTerms, turnOff=turnOff, dataTimes=dataTimes,dataValues=dataValues,
+        fit = try(nlm(p=c(nu,etap), f=transmodel.error, steptol=1e-6, gradtol=1e-6, iterlim=1000, fitTerms=fitTerms, turnOff=turnOff, dataTimes=dataTimes,dataValues=dataValues,
                       rhoc0=rhoc0, rhop0=rhop0,gammap=gammap ))
         if (class(fit)=="try-error") return(NULL)
         nu = fit$estimate[1]
@@ -92,12 +92,12 @@ transmodel.fit = function(host="localhost",
     } else if (fitTerms=="etap.gammap") {
         
         ## fix nu, rhop0; adjust etap, gammap
-        fit = try(nlm(p=c(etap,gammap), f=transmodel.error, gradtol=1e-5, iterlim=1000, fitTerms=fitTerms, turnOff=turnOff, dataTimes=dataTimes, dataValues=dataValues,
+        fit = try(nlm(p=c(etap,gammap), f=transmodel.error, steptol=1e-6, gradtol=1e-6, iterlim=1000, fitTerms=fitTerms, turnOff=turnOff, dataTimes=dataTimes, dataValues=dataValues,
                       rhoc0=rhoc0,nu=nu, rhop0=rhop0 ))
         if (class(fit)=="try-error") return(NULL)
         if (fit$code==4 || fit$code==5) {
             ## try again with failed fit params
-            fit = try(nlm(p=fit$estimate, f=transmodel.error, gradtol=1e-5, iterlim=1000, fitTerms=fitTerms, turnOff=turnOff, dataTimes=dataTimes, dataValues=dataValues,
+            fit = try(nlm(p=fit$estimate, f=transmodel.error, steptol=1e-6, gradtol=1e-6, iterlim=1000, fitTerms=fitTerms, turnOff=turnOff, dataTimes=dataTimes, dataValues=dataValues,
                           rhoc0=rhoc0, nu=nu, rhop0=rhop0 ))
             if (class(fit)=="try-error") return(NULL)
         }
@@ -107,7 +107,7 @@ transmodel.fit = function(host="localhost",
     } else {
         
         ## rhop0.etap: fix nu, gammap; adjust rhop0, etap -- default to refine rhop0 and etap for larger parameter estimates below as well
-        fit = try(nlm(p=c(rhop0,etap), f=transmodel.error, gradtol=1e-5, iterlim=1000, fitTerms="rhop0.etap", turnOff=turnOff, dataTimes=dataTimes, dataValues=dataValues,
+        fit = try(nlm(p=c(rhop0,etap), f=transmodel.error, steptol=1e-6, gradtol=1e-6, iterlim=1000, fitTerms="rhop0.etap", turnOff=turnOff, dataTimes=dataTimes, dataValues=dataValues,
                       rhoc0=rhoc0, nu=nu, gammap=gammap ))
         if (class(fit)=="try-error") return(NULL)
         rhop0 = fit$estimate[1]
@@ -118,12 +118,12 @@ transmodel.fit = function(host="localhost",
     if (fitTerms=="rhop0.etap.gammap") {
 
         ## fix nu; adjust rhop0, etap, gammap
-        fit = try(nlm(p=c(rhop0,etap,gammap), f=transmodel.error, gradtol=1e-5, iterlim=1000, fitTerms=fitTerms, turnOff=turnOff, dataTimes=dataTimes, dataValues=dataValues,
+        fit = try(nlm(p=c(rhop0,etap,gammap), f=transmodel.error, steptol=1e-6, gradtol=1e-6, iterlim=1000, fitTerms=fitTerms, turnOff=turnOff, dataTimes=dataTimes, dataValues=dataValues,
                       rhoc0=rhoc0, nu=nu ))
         if (class(fit)=="try-error") return(NULL)
         if (fit$code==4 || fit$code==5) {
             ## try again with failed fit params
-            fit = try(nlm(p=fit$estimate, f=transmodel.error, gradtol=1e-5, iterlim=1000, fitTerms=fitTerms, turnOff=turnOff, dataTimes=dataTimes, dataValues=dataValues,
+            fit = try(nlm(p=fit$estimate, f=transmodel.error, steptol=1e-6, gradtol=1e-6, iterlim=1000, fitTerms=fitTerms, turnOff=turnOff, dataTimes=dataTimes, dataValues=dataValues,
                           rhoc0=rhoc0, nu=nu ))
             if (class(fit)=="try-error") return(NULL)
         }
@@ -134,12 +134,12 @@ transmodel.fit = function(host="localhost",
     } else if (fitTerms=="nu.etap.gammap") {
 
         ## fix rhop0; adjust nu, etap, gammap
-        fit = try(nlm(p=c(nu,etap,gammap), f=transmodel.error, gradtol=1e-5, iterlim=1000, fitTerms=fitTerms, turnOff=turnOff, dataTimes=dataTimes, dataValues=dataValues,
+        fit = try(nlm(p=c(nu,etap,gammap), f=transmodel.error, steptol=1e-6, gradtol=1e-6, iterlim=1000, fitTerms=fitTerms, turnOff=turnOff, dataTimes=dataTimes, dataValues=dataValues,
                       rhoc0=rhoc0, rhop0=rhop0 ))
         if (class(fit)=="try-error") return(NULL)
         if (fit$code==4 || fit$code==5) {
             ## try again with failed fit params
-            fit = try(nlm(p=fit$estimate, f=transmodel.error, gradtol=1e-5, iterlim=1000, fitTerms=fitTerms, turnOff=turnOff, dataTimes=dataTimes, dataValues=dataValues,
+            fit = try(nlm(p=fit$estimate, f=transmodel.error, steptol=1e-6, gradtol=1e-6, iterlim=1000, fitTerms=fitTerms, turnOff=turnOff, dataTimes=dataTimes, dataValues=dataValues,
                           rhoc0=rhoc0, rhop0=rhop0 ))
             if (class(fit)=="try-error") return(NULL)
         }
@@ -150,12 +150,12 @@ transmodel.fit = function(host="localhost",
     } else if (fitTerms=="nu.rhop0.etap.gammap") {
 
         ## adjust nu, rhop0, etap, gammap
-        fit = try(nlm(p=c(nu,rhop0,etap,gammap), f=transmodel.error, gradtol=1e-5, iterlim=1000, fitTerms=fitTerms, turnOff=turnOff, dataTimes=dataTimes, dataValues=dataValues,
+        fit = try(nlm(p=c(nu,rhop0,etap,gammap), f=transmodel.error, steptol=1e-6, gradtol=1e-6, iterlim=1000, fitTerms=fitTerms, turnOff=turnOff, dataTimes=dataTimes, dataValues=dataValues,
                       rhoc0=rhoc0 ))
         if (class(fit)=="try-error") return(NULL)
         if (fit$code==4 || fit$code==5) {
             ## try again with failed fit params
-            fit = try(nlm(p=fit$estimate, f=transmodel.error, gradtol=1e-5, iterlim=1000, fitTerms=fitTerms, turnOff=turnOff, dataTimes=dataTimes, dataValues=dataValues,
+            fit = try(nlm(p=fit$estimate, f=transmodel.error, steptol=1e-6, gradtol=1e-6, iterlim=1000, fitTerms=fitTerms, turnOff=turnOff, dataTimes=dataTimes, dataValues=dataValues,
                           rhoc0=rhoc0 ))
             if (class(fit)=="try-error") return(NULL)
         }

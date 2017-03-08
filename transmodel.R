@@ -118,18 +118,18 @@ transmodel = function(turnOff=0, rhon0, rhoc0, nu, rhop0, etap, gammap, dataTime
     text(xtext, maxRight-step*8, bquote(paste(gamma[p]==.(round(gammap,2))," ",h^-1)), pos=3, col="red")
 
     ## flag suspect fits
-    if (abs(etap*(rhon0+rhoc0)/abs(rhop0))<1 || abs(etap*(rhon0+rhoc0)/abs(rhop0))>100) {
-        text(max(t), maxRight-step*6+step*0.2, "!!", pos=3, col="red", font=2)
+    if (abs(etap.hat)>5) {
+        text(max(t), maxRight-step*7+step*0.2, "!", pos=3, col="red", font=2)
     }
     if (gammap<0.1 || gammap>10) {
-        text(max(t), maxRight-step*8+step*0.2, "!!", pos=3, col="red", font=2)
+        text(max(t), maxRight-step*8+step*0.2, "!", pos=3, col="red", font=2)
     }
 
     ## derived fit metrics
     if (hasArg(dataTimes) && hasArg(dataValues)) {
         text(xtext, maxRight-step*10, bquote(paste(kappa==.(signif(kappa,3))," ",h^-2)), pos=3, col="black")
         text(xtext, maxRight-step*11, bquote(logFC(inf)==.(round(logFCinf,2))), pos=3, col="black")
-        text(xtext, maxRight-step*12, bquote(r^2==.(round(R2,2))), pos=3, col="black")
+        text(xtext, maxRight-step*12, bquote(r^2==.(round(R2,5))), pos=3, col="black")
     }
 
 }
