@@ -155,7 +155,7 @@ transmodel.fit = function(host="localhost",
         if (class(fit)=="try-error") return(NULL)
         if (fit$code==4 || fit$code==5) {
             ## try again with failed fit params
-            fit = try(nlm(p=fit$estimate, f=transmodel.error, gradtol=1e-5, iterlim=1000, fitTerms=fitTerms, dataTimes=dataTimes, dataValues=dataValues,
+            fit = try(nlm(p=fit$estimate, f=transmodel.error, gradtol=1e-5, iterlim=1000, fitTerms=fitTerms, turnOff=turnOff, dataTimes=dataTimes, dataValues=dataValues,
                           rhoc0=rhoc0 ))
             if (class(fit)=="try-error") return(NULL)
         }
