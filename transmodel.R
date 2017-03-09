@@ -115,7 +115,7 @@ transmodel = function(turnOff=0, rhon0, rhoc0, nu, rhop0, etap, gammap, dataTime
     text(xtext, maxRight-step*5, bquote(rho[p0]==.(signif(rhop0,3))), pos=3, col="red")
     text(xtext, maxRight-step*6, bquote(paste(eta[p]==.(signif(etap,3))," ",h^-1)), pos=3, col="red")
     text(xtext, maxRight-step*7, bquote(paste(hat(eta)[p]==.(signif(etap.hat,3))," ",h^-1)), pos=3, col="red")
-    text(xtext, maxRight-step*8, bquote(paste(gamma[p]==.(round(gammap,2))," ",h^-1)), pos=3, col="red")
+    text(xtext, maxRight-step*8, bquote(paste(gamma[p]==.(round(gammap,3))," ",h^-1)), pos=3, col="red")
 
     ## flag suspect fits
     if (abs(etap.hat)>5) {
