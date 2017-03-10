@@ -20,10 +20,14 @@ transmodel.fit = function(host="localhost",
     if (!hasArg(fitTerms)) {
         if (hasArg(rhop0) && hasArg(gammap)) {
             fitTerms = "etap"
+        } else if (hasArg(rhop0) && hasArg(etap)) {
+            fitTerms = "gammap"
         } else if (hasArg(gammap)) {
             fitTerms = "rhop0.etap"
         } else if (hasArg(rhop0)) {
-            fitTerms = "etap.gammap";
+            fitTerms = "etap.gammap"
+        } else if (hasArg(etap)) {
+            fitTerms = "rhop0.gammap"
         }
     }
 
@@ -103,7 +107,22 @@ transmodel.fit = function(host="localhost",
         }
         etap = fit$estimate[1]
         gammap = fit$estimate[2]
+
+    } else if (fitTerms=="rhop0.gammap") {
         
+        ## fix nu, etap; adjust rhop0, gammap
+        fit = try(nlm(p=c(rhop0,gammap), f=transmodel.error, steptol=1e-6, gradtol=1e-6, iterlim=1000, fitTerms=fitTerms, turnOff=turnOff, dataTimes=dataTimes, dataValues=dataValues,
+                      rhoc0=rhoc0,nu=nu, etap=etap ))
+        if (class(fit)=="try-error") return(NULL)
+        if (fit$code==4 || fit$code==5) {
+            ## try again with failed fit params
+            fit = try(nlm(p=fit$estimate, f=transmodel.error, steptol=1e-6, gradtol=1e-6, iterlim=1000, fitTerms=fitTerms, turnOff=turnOff, dataTimes=dataTimes, dataValues=dataValues,
+                          rhoc0=rhoc0,nu=nu, etap=etap ))
+            if (class(fit)=="try-error") return(NULL)
+        }
+        rhop0 = fit$estimate[1]
+        gammap = fit$estimate[2]
+
     } else {
         
         ## rhop0.etap: fix nu, gammap; adjust rhop0, etap -- default to refine rhop0 and etap for larger parameter estimates below as well

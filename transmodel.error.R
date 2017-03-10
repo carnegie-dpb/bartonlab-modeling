@@ -28,6 +28,9 @@ transmodel.error = function(p, fitTerms, turnOff, rhoc0,rhon0,nu, rhop0,etap,gam
     } else if (fitTerms=="rhop0.etap") {
         rhop0 = p[1]
         etap = p[2]
+    } else if (fitTerms=="rhop0.gammap") {
+        rhop0 = p[1]
+        gammap = p[2]
     } else if (fitTerms=="rhop0.etap.gammap") {
         rhop0 = p[1]
         etap = p[2]
@@ -43,8 +46,8 @@ transmodel.error = function(p, fitTerms, turnOff, rhoc0,rhon0,nu, rhop0,etap,gam
         gammap = p[4]
     }
 
-    ## set fit=0 if parameters out of bounds
     if (!gammapSupplied && gammap>gammapMax) {
+        ## upper limit on gamma required
         fitValues = dataTimes*0
     } else {
         fitValues = rhop(t=dataTimes, rhoc0=rhoc0, rhon0=rhon0, nu=nu, rhop0=rhop0, etap=etap, gammap=gammap, turnOff=turnOff)

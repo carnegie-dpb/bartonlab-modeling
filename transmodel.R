@@ -33,7 +33,12 @@ transmodel = function(turnOff=0, rhon0, rhoc0, nu, rhop0, etap, gammap, dataTime
     ## transcript concentration
     rhop_t = rhop(t=t, turnOff=turnOff, rhoc0=rhoc0,nu=nu, rhop0=rhop0,etap=etap,gammap=gammap)
     
-    ## plot transcript concentration
+    ## plot TF concentrations on right axis
+    plot(t, rhon_t, type="l", col="blue", axes=FALSE, xlab=NA, ylab=NA, ylim=c(0,max(rhon_t)))
+    axis(side=4) 
+    par(new=TRUE)
+
+    ## plot transcript concentration on left axis
     if (hasArg(dataValues)) {
         ymin = min(dataValues,rhop_t)
         ymax = max(dataValues,rhop_t)
@@ -44,7 +49,7 @@ transmodel = function(turnOff=0, rhon0, rhoc0, nu, rhop0, etap, gammap, dataTime
         plot(t, rhop_t, type="l", xlab="time (h)", ylab="nuclear concentration", col="red", ylim=c(0,ymax), main=main)
     }
 
-    ## compare with provided data
+    ## compare with provided data on left axis
     if (hasArg(dataTimes) && hasArg(dataValues)) {
         if (plotBars) {
             ## plot mean and error bars
@@ -64,31 +69,15 @@ transmodel = function(turnOff=0, rhon0, rhoc0, nu, rhop0, etap, gammap, dataTime
         error = errorMetric(fitValues,dataValues)
     }
 
-    ## plot TF concentrations on right axis, this axis used for annotation
-    par(new=TRUE)
-    plot(t, rhon_t, type="l", col="blue", axes=FALSE, xlab=NA, ylab=NA, ylim=c(0,max(rhon_t)))
-        
-    ## lines(t, rhoc_t, col="blue")
-    axis(side=4) 
-    par(new=FALSE)
-
-    ## annotation using right axis so stuff always in same place for given rhoc0
-
-    ## metrics for display
+    ## other metrics
     logFCinf = log2(1 + etap/gammap*rhoc0/rhop0)
     kappa = nu*etap*rhoc0/rhop0
     etap.hat = etap*rhon0/rhop0
 
-    ## LOG
-    step = 1.12^(par()$usr[4]-par()$usr[3])
-    maxRight = 10^par()$usr[4]/step
-    xtext = par()$usr[2]*0.95
-    ylegend = 10^par()$usr[3]*sqrt(step)
-
     ## LIN
-    maxRight = max(rhon_t)*0.7
-    step = max(rhon_t)*0.04
-    xtext = par()$usr[2]*0.85
+    maxRight = ymax*0.8
+    step = ymax*0.05
+    xtext = par()$usr[2]*0.80
     ylegend = 0
 
     if (hasArg(dataLabel) && !is.na(dataLabel)) {
@@ -131,5 +120,7 @@ transmodel = function(turnOff=0, rhon0, rhoc0, nu, rhop0, etap, gammap, dataTime
         text(xtext, maxRight-step*11, bquote(logFC(inf)==.(round(logFCinf,2))), pos=3, col="black")
         text(xtext, maxRight-step*12, bquote(r^2==.(round(R2,5))), pos=3, col="black")
     }
+
+    par(new=FALSE)
 
 }

@@ -4,7 +4,7 @@
 
 errorMetric = function(fitValues, dataValues) {
 
-    ## ## sum of squared deviation scaled by sum(data^2)
+    ## ## sum of square deviation normalized by sum(data^2)
     ## numer = 0
     ## denom = 0
     ## for (i in 1:length(dataValues)) {
@@ -13,14 +13,8 @@ errorMetric = function(fitValues, dataValues) {
     ## }
     ## err = numer/denom
 
-    ## 1 - r^2 : seems to produce sharper gradients, "better" fits (and maximizes r^2)
-    dataMean = mean(dataValues)
-    numer = sum( (dataValues-fitValues)^2 )
-    denom = sum( (dataValues-dataMean)^2 )
-    err = numer/denom
-
-    ## ## sum of squared deviation - seems to converge the fastest
-    ## err = sum( (dataValues-fitValues)^2 )
+    ## least squares - seems to converge the fastest
+    err = sum( (dataValues-fitValues)^2 )
 
     return(err)
     
