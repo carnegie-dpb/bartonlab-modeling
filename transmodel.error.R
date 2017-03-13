@@ -6,7 +6,7 @@ source("~/modeling/errorMetric.R")
 ## assumes no nuclear loss of TF (gamman=0)
 ## gammapMax is upper bound on allowable gammap value; if above that, fit is set to zero
 
-transmodel.error = function(p, fitTerms, turnOff, rhoc0,rhon0,nu, rhop0,etap,gammap, dataTimes, dataValues, gammapMax=8) {
+transmodel.error = function(p, fitTerms, turnOff, rhoc0,rhon0,nu, rhop0,etap,gammap, dataTimes, dataValues, gammapMax=5) {
 
     ## have do do this before gammap is set below
     gammapSupplied = hasArg(gammap)
