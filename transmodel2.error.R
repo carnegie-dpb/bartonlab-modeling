@@ -6,7 +6,7 @@ source("~/modeling/rhos.R")
 ## return the error metric for modeling an indirect target, given parameters for the TF and primary target
 ##
 
-transmodel2.error = function(p, fitTerms="rhos0.etas.gammas", rhoc0,rhon0,nu, etap,gammap, rhos0=1,etas=1,gammas=4, dataTimes,data2Values, gammasMax=8) {
+transmodel2.error = function(p, fitTerms="rhos0.etas.gammas", rhoc0,rhon0,nu, etap,gammap, rhos0,etas,gammas, dataTimes,data2Values, gammasMax=8) {
 
     if (fitTerms=="rhos0.etas") {
         rhos0 = p[1]
@@ -17,6 +17,11 @@ transmodel2.error = function(p, fitTerms="rhos0.etas.gammas", rhoc0,rhon0,nu, et
         rhos0 = p[1]
         etas = p[2]
         gammas = p[3]
+    }
+
+    if (fitTerms=="etas.gammas") {
+        etas = p[1]
+        gammas = p[2]
     }
 
     ## set fit=0 if parameters out of bounds

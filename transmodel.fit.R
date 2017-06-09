@@ -31,15 +31,18 @@ transmodel.fit = function(host="localhost",
         }
     }
 
-    ## get time (in hours) and expression arrays for the given schema and gene ID from the database
+    ## get time (in hours) and expression arrays for the given schema and gene from the database
     if (!hasArg(dataTimes)) {
         dataTimes = getTimes(schema=schema, condition=condition, host=host)
         if (max(dataTimes)>5) dataTimes = dataTimes/60
-        dataValues = getExpression(schema=schema, condition=condition, gene=toupper(gene), host=host)
+        dataValues = getExpression(schema=schema, condition=condition, gene=gene, host=host)
         if (is.null(dataValues)) {
             print("No data - aborting.")
             return(NULL)
         }
+        ## zero or nearly zero expression leads to crazy etap values, so limit values from below
+        dataValues[dataValues<0.1] = 0.1
+        ## data label for legend
         if (is.na(dataLabel)) dataLabel = paste(condition,":",gene,sep="")
     }
     
@@ -49,8 +52,16 @@ transmodel.fit = function(host="localhost",
         rhop0 = mean(dataValues[dataTimes==tMin])
     }
 
-    ## estimate etap from rhop0, assume up-regulated
-    if (!hasArg(etap)) etap = 0.1*rhop0
+    ## estimate etap from rhop0, get sign from sign of last-first points
+    if (!hasArg(etap)) {
+        tMax = max(dataTimes)
+        rhope = mean(dataValues[dataTimes==tMax])
+        if (rhope>rhop0) {
+            etap = 0.1*rhop0
+        } else {
+            etap = -0.1*rhop0
+        }
+    }
 
     if (fitTerms=="nu") {
 
@@ -123,12 +134,18 @@ transmodel.fit = function(host="localhost",
         rhop0 = fit$estimate[1]
         gammap = fit$estimate[2]
 
-    } else {
+    } else if (fitTerms=="rhop0.etap") {
         
-        ## rhop0.etap: fix nu, gammap; adjust rhop0, etap -- default to refine rhop0 and etap for larger parameter estimates below as well
+        ## fix nu, gammap; adjust rhop0, etap -- default to refine rhop0 and etap for larger parameter estimates below as well
         fit = try(nlm(p=c(rhop0,etap), f=transmodel.error, steptol=1e-6, gradtol=1e-6, iterlim=1000, fitTerms="rhop0.etap", turnOff=turnOff, dataTimes=dataTimes, dataValues=dataValues,
                       rhoc0=rhoc0, nu=nu, gammap=gammap ))
         if (class(fit)=="try-error") return(NULL)
+        if (fit$code==4 || fit$code==5) {
+            ## try again with failed fit params
+            fit = try(nlm(p=fit$estimate, f=transmodel.error, steptol=1e-6, gradtol=1e-6, iterlim=1000, fitTerms=fitTerms, turnOff=turnOff, dataTimes=dataTimes, dataValues=dataValues,
+                          rhoc0=rhoc0, nu=nu, gammap=gammap ))
+            if (class(fit)=="try-error") return(NULL)
+        }
         rhop0 = fit$estimate[1]
         etap = fit$estimate[2]
         

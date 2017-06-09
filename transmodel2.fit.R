@@ -20,6 +20,9 @@ transmodel2.fit = function(host="localhost",
 
     ## if gammas supplied, leave it fixed in fits
     if (hasArg(gammas)) fitTerms = "rhos0.etas"
+
+    ## if rhos0 supplied, leave it fixed in fits
+    if (hasArg(rhos0)) fitTerms = "etas.gammas"
     
     ## get time (in hours) and expression arrays for the given schema and gene IDs
     if (!hasArg(dataTimes)) {
@@ -64,8 +67,16 @@ transmodel2.fit = function(host="localhost",
                    rhoc0=rhoc0, rhon0=rhon0, nu=nu, etap=etap, gammap=gammap, f=transmodel2.error, gradtol=1e-5, iterlim=1000, dataTimes=dataTimes, data2Values=data2Values)
         rhos0 = fit2$estimate[1]
         etas = fit2$estimate[2]
-    }
         
+    } else if (fitTerms=="etas.gammas") {
+        
+        fit2 = nlm(p=c(etas,gammas), fitTerms=fitTerms, rhos0=rhos0,
+                   rhoc0=rhoc0, rhon0=rhon0, nu=nu, etap=etap, gammap=gammap, f=transmodel2.error, gradtol=1e-5, iterlim=1000, dataTimes=dataTimes, data2Values=data2Values)
+        etas = fit2$estimate[1]
+        gammas = fit2$estimate[2]
+
+    }
+    
     if (fit2$code==4) print("*** fit2 ITERATION LIMIT EXCEEDED ***")
     if (fit2$code==5) print("*** fit2 MAXIMUM STEP SIZE EXCEEDED FIVE CONSECUTIVE TIMES ***")
 

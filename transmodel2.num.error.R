@@ -1,10 +1,10 @@
+source("~/modeling/rhos.num.R")
+source("~/modeling/errorMetric.R")
+
 ##
 ## return the error metric for modeling a secondary target, for nlm usage with numerical rhocnp.R
 ##
 ## assumes no nuclear loss of TF (gamman=0)
-
-source("rhos.num.R")
-source("errorMetric.R")
 
 ## the transcription model to be minimized
 transmodel2.num.error = function(p, fitTerms, turnOff, rhoc0,rhon0,nu, rhop0,etap,gammap, rhos0,etas,gammas, dataTimes, dataValues) {
