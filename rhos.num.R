@@ -1,11 +1,11 @@
+require("deSolve")
+source("~/modeling/rhop.R")
+
 ##
 ## numerically solve for secondary transcription given the functions for nuclear GR-TF and primary transcript concentrations
 ##
 ## Note: gammae == 0 since analytic rhop doesn't include gammae
 ##
-
-require("deSolve")
-source("rhop.R")
 
 rhos.num = function(turnOff=0, rhoc0,rhon0,nu, rhop0,etap,gammap, rhos0,etas,gammas, t) {
 
