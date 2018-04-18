@@ -18,6 +18,11 @@ transmodel2.fit = function(host="localhost",
                            data1Label=NA, data2Label=NA, plotBars=FALSE, doPlot=TRUE, main=""
                            ) {
 
+    ## default plot title if not given
+    if (doPlot && main=="") {
+        main = paste(schema,condition,":",gene1,"->",gene2)
+    }
+
     ## if gammas supplied, leave it fixed in fits
     if (hasArg(gammas)) fitTerms = "rhos0.etas"
 

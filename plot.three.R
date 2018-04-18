@@ -31,23 +31,25 @@ plot.three = function(schema="gse70796", condition="GR-REV", gene1="ZPR1", gene2
         gene1.fit = transmodel.fit(schema=schema, condition=condition, gene=gene1, turnOff=turnOff, doPlot=F, rhop0=gene1.rhop0)
         gene1.etap = gene1.fit$estimate[1]
         gene1.gammap = gene1.fit$estimate[2]
-        gene1.etap.hat = gene1.etap*rhon0/gene1.rhop0
     } else {
         gene1.rhop0 = gene1.fit$estimate[1]
         gene1.etap = gene1.fit$estimate[2]
         gene1.gammap = gene1.fit$estimate[3]
-        gene1.etap.hat = gene1.etap*rhon0/gene1.rhop0
     }
+    gene1.etap.hat = gene1.etap*rhon0/gene1.rhop0
+    gene1.logFCinf = log2(1 + gene1.etap.hat/gene1.gammap*rhoc0/rhon0)
 
     gene2.rhop0 = gene2.fit$estimate[1]
     gene2.etap = gene2.fit$estimate[2]
     gene2.gammap = gene2.fit$estimate[3]
     gene2.etap.hat = gene2.etap*rhon0/gene2.rhop0
+    gene2.logFCinf = log2(1 + gene2.etap.hat/gene2.gammap*rhoc0/rhon0)
 
     gene3.rhop0 = gene3.fit$estimate[1]
     gene3.etap = gene3.fit$estimate[2]
     gene3.gammap = gene3.fit$estimate[3]
     gene3.etap.hat = gene3.etap*rhon0/gene3.rhop0
+    gene3.logFCinf = log2(1 + gene3.etap.hat/gene3.gammap*rhoc0/rhon0)
 
     ## get R-squared and error metric
     gene1.fitValues = rhop(rhoc=rhoc0, nu=nu, t=t.data, rhop0=gene1.rhop0, etap=gene1.etap, gammap=gene1.gammap, turnOff=turnOff)
@@ -92,11 +94,11 @@ plot.three = function(schema="gse70796", condition="GR-REV", gene1="ZPR1", gene2
     ystart = (ylim[1]*ylim[2]^3)^0.25
     frac = (ylim[1]/ylim[2])^0.07
 
-    text(xtext, ystart*frac^0, col="black", pos=2, bquote(paste(hat(eta)[p], "      ", gamma[p], "      ", r^2, "   ")))
+    text(xtext, ystart*frac^0, col="black",   pos=2, bquote(paste(hat(eta)[p], "        ",             gamma[p], "      ",              logFC[infinity],"    ",                r^2)))
 
-    text(xtext, ystart*frac^1, col=colors[1], pos=2, bquote(paste(.(round(gene1.etap.hat,2)), "   ", .(round(gene1.gammap,2)), "   ", .(round(gene1.R2,2)) )))
-    text(xtext, ystart*frac^2, col=colors[2], pos=2, bquote(paste(.(round(gene2.etap.hat,2)), "   ", .(round(gene2.gammap,2)), "   ", .(round(gene2.R2,2)) )))
-    text(xtext, ystart*frac^3, col=colors[3], pos=2, bquote(paste(.(round(gene3.etap.hat,2)), "   ", .(round(gene3.gammap,2)), "   ", .(round(gene3.R2,2)) )))
+    text(xtext, ystart*frac^1, col=colors[1], pos=2, bquote(paste(.(round(gene1.etap.hat,3)), "   ", .(round(gene1.gammap,3)), "   ", .(round(gene1.logFCinf,2)), "   ", .(round(gene1.R2,2)) )))
+    text(xtext, ystart*frac^2, col=colors[2], pos=2, bquote(paste(.(round(gene2.etap.hat,3)), "   ", .(round(gene2.gammap,3)), "   ", .(round(gene2.logFCinf,2)), "   ", .(round(gene2.R2,2)) )))
+    text(xtext, ystart*frac^3, col=colors[3], pos=2, bquote(paste(.(round(gene3.etap.hat,3)), "   ", .(round(gene3.gammap,3)), "   ", .(round(gene3.logFCinf,2)), "   ", .(round(gene3.R2,2)) )))
 
 
 }

@@ -110,19 +110,25 @@ transmodel2.num = function(turnOff, rhoc0,rhon0,nu, rhop0,etap,gammap, rhos0,eta
                )
     }
 
+    ## extra params
+    etap.hat = etap*rhon0/rhop0
+    etas.hat = etas*rhop0/rhos0
+
     text(xtext, maxRight, bquote(rho[c0]==.(round(rhoc0,1))), pos=4, col="blue")
     text(xtext, maxRight-1*step, bquote(rho[n0]==.(round(rhon0,1))), pos=4, col="blue")
     text(xtext, maxRight-2*step, bquote(paste(nu==.(signif(nu,3))," ",h^-1)), pos=4, col="blue")
     text(xtext, maxRight-3*step, bquote(gamma[n]==0), pos=4, col="blue")
     text(xtext, maxRight-4*step, bquote(gamma[e]==0), pos=4, col="blue")
 
-    text(xtext, maxRight-6*step, bquote(rho[p0]==.(round(rhop0,1))), pos=4, col="red")
-    text(xtext, maxRight-7*step, bquote(paste(eta[p]==.(signif(etap,3))," ",h^-1)), pos=4, col="red")
+    text(xtext, maxRight-5*step, bquote(rho[p0]==.(round(rhop0,1))), pos=4, col="red")
+    text(xtext, maxRight-6*step, bquote(paste(eta[p]==.(signif(etap,3))," ",h^-1)), pos=4, col="red")
+    text(xtext, maxRight-7*step, bquote(paste(hat(eta)[p]==.(signif(etap.hat,3))," ",h^-1)), pos=4, col="red")
     text(xtext, maxRight-8*step, bquote(paste(gamma[p]==.(signif(gammap,3))," ",h^-1)), pos=4, col="red")
     text(xtext, maxRight-9*step, bquote(r^2==.(round(R2p,2))), pos=4, col="red")
 
-    text(xtext, maxRight-11*step, bquote(rho[s0]==.(round(rhos0,1))), pos=4, col="darkgreen")
-    text(xtext, maxRight-12*step, bquote(paste(eta[s]==.(signif(etas,3))," ",h^-1)), pos=4, col="darkgreen")
+    text(xtext, maxRight-10*step, bquote(rho[s0]==.(round(rhos0,1))), pos=4, col="darkgreen")
+    text(xtext, maxRight-11*step, bquote(paste(eta[s]==.(signif(etas,3))," ",h^-1)), pos=4, col="darkgreen")
+    text(xtext, maxRight-12*step, bquote(paste(hat(eta)[s]==.(signif(etas.hat,3))," ",h^-1)), pos=4, col="darkgreen")
     text(xtext, maxRight-13*step, bquote(paste(gamma[s]==.(signif(gammas,3))," ",h^-1)), pos=4, col="darkgreen")
     text(xtext, maxRight-14*step, bquote(r^2==.(round(R2s,2))), pos=4, col="darkgreen")
 

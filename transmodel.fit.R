@@ -16,6 +16,11 @@ transmodel.fit = function(host="localhost",
                           dataTimes, dataValues, dataLabel=NA,
                           main="", plotBars=FALSE,  doPlot=TRUE) {
 
+    ## default plot title if not given
+    if (doPlot && main=="") {
+        main = paste(schema,condition,":",gene)
+    }
+    
     ## default fitTerms if certain args are supplied
     if (!hasArg(fitTerms)) {
         if (hasArg(rhop0) && hasArg(gammap)) {
@@ -205,7 +210,6 @@ transmodel.fit = function(host="localhost",
     fitValues = rhop(t=dataTimes, turnOff=turnOff, rhoc0=rhoc0,nu=nu, rhop0=rhop0,etap=etap,gammap=gammap)
     
     R2 = Rsquared(fitValues,dataValues)
-    fit$R2 = R2
     
     ## plot it
     if (doPlot) {
@@ -217,6 +221,14 @@ transmodel.fit = function(host="localhost",
     }
     
     ## return fit in case we want it
+    fit$rhoc0 = rhoc0
+    fit$rhon0 = rhon0
+    fit$nu = nu
+    fit$rhop0 = rhop0
+    fit$etap = etap
+    fit$gammap = gammap
+    fit$R2 = R2
+    
     return(fit)
 
 }

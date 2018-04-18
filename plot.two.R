@@ -76,9 +76,12 @@ plot.two = function(schema="gse70796", condition="GR-REV", gene1="ZPR1", gene2="
     ystart = (ylim[1]*ylim[2]^3)^0.25
     frac = (ylim[1]/ylim[2])^0.07
 
-    text(xtext, ystart*frac^0, col="black", pos=2, bquote(paste(hat(eta)[p], "      ", gamma[p], "      ", r^2, "   ")))
+    text(xtext, ystart*frac^0, col="red", pos=2, bquote(paste(gamma[p]=.(round(gammap,2)))))
+    text(xtext, ystart*frac^0, col="red", pos=2, bquote(paste(hat(eta)[p]=.(round(etap.hat,2)))))
+    text(xtext, ystart*frac^0, col="red", pos=2, bquote(paste(r^2=.(round(gene1.R2,2)))))
 
-    text(xtext, ystart*frac^1, col=colors[1], pos=2, bquote(paste(.(round(gene1.etap.hat,2)), "   ", .(round(gene1.gammap,2)), "   ", .(round(gene1.R2,2)) )))
-    text(xtext, ystart*frac^2, col=colors[2], pos=2, bquote(paste(.(round(gene2.etap.hat,2)), "   ", .(round(gene2.gammap,2)), "   ", .(round(gene2.R2,2)) )))
+    text(xtext, ystart*frac^0, col="darkgreen", pos=2, bquote(paste(gamma[s]=.(round(gammas,2)))))
+    text(xtext, ystart*frac^0, col="darkgreen", pos=2, bquote(paste(hat(eta)[s]=.(round(etas.hat,2)))))
+    text(xtext, ystart*frac^0, col="darkgreen", pos=2, bquote(paste(r^2=.(round(gene2.R2,2)))))
 
 }
